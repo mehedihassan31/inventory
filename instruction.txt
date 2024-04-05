@@ -1,0 +1,59 @@
+Project Setup Instructions
+To run the project, follow these steps:
+
+Pull from Git:
+**************
+Copy code
+
+git pull origin master
+--------------------
+
+
+
+Install Dependencies with Composer:
+******************
+composer install
+
+Generate Application Key:
+***************
+php artisan key:generate
+
+
+Set Up Database:
+******************
+Rename .env.example to .env
+Configure your database settings in .env file
+
+
+Run Migrations:
+*****************
+php artisan migrate
+
+Install NPM Dependencies:
+
+npm install
+***********************
+Compile Assets:
+
+For Development:
+********************
+npm run dev
+
+
+For Production Build:
+********************
+npm run build
+
+Generate Storage Link:
+********************
+php artisan storage:link
+
+Serve the Application:
+Use your preferred web server or run the application using Laravel's built-in server:
+******************
+php artisan serve
+
+
+Access the Application:
+**********************
+Open your web browser and visit the application at the specified URL.

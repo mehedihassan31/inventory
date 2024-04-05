@@ -23,8 +23,6 @@ use App\Http\Controllers\InventoryController;
 // });
 
 
-// Route::apiResource('inventories', InventoryController::class);
-
 
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
@@ -36,11 +34,3 @@ Route::post('/items/{item}/update', [ItemController::class, 'updateData']);
 Route::apiResource('items', ItemController::class)->middleware('auth:sanctum');;
 
 Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
-
-Route::group(['prefix' => 'books', 'middleware' => 'auth:sanctum'], function () {
-    Route::get('/', [BookController::class, 'index']);
-    Route::post('add', [BookController::class, 'add']);
-    Route::get('edit/{id}', [BookController::class, 'edit']);
-    Route::post('update/{id}', [BookController::class, 'update']);
-    Route::delete('delete/{id}', [BookController::class, 'delete']);
-});
