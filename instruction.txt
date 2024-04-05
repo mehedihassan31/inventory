@@ -1,6 +1,10 @@
 Project Setup Instructions
 To run the project, follow these steps:
 
+HP Version
+************
+8.1
+
 Pull from Git:
 **************
 Copy code
