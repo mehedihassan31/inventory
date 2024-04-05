@@ -7,12 +7,15 @@
                     <div class="form-group">
                         <label>Name</label>
                         <input type="text" class="form-control" v-model="inventory.name">
+                        <span class="text-danger" v-if="errors.name">{{ errors.name[0] }}</span>
                     </div>
                     <div class="form-group">
                         <label>Description</label>
                         <input type="text" class="form-control" v-model="inventory.description">
+                        <span class="text-danger" v-if="errors.description">{{ errors.description[0] }}</span>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Inventory</button>
+                    <button type="submit" class="btn btn-primary mt-2">Add Inventory</button>
+                    <div class="alert alert-success mt-3" v-if="successMessage">{{ successMessage }}</div>
                 </form>
             </div>
         </div>
@@ -23,7 +26,9 @@
 export default {
     data() {
         return {
-            inventory: {}
+            inventory: {},
+            errors: {},
+            successMessage: ''
         }
     },
     methods: {
@@ -31,10 +36,17 @@ export default {
             this.$axios.get('/sanctum/csrf-cookie').then(response => {
                 this.$axios.post('/api/inventories', this.inventory)
                     .then(response => {
-                        this.$router.push({name: 'inventories'})
+                        this.successMessage = 'Inventory added successfully.';
+                        setTimeout(() => {
+                            this.$router.push({ name: 'inventories' });
+                        }, 1500);
                     })
                     .catch(function (error) {
-                        console.error(error);
+                        if (error.response.status === 422) {
+                            this.errors = error.response.data.errors;
+                        } else {
+                            console.error(error);
+                        }
                     });
             })
         }

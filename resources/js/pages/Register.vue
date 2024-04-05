@@ -7,6 +7,10 @@
                     {{ error }}
                 </div>
 
+                <div class="alert alert-success" role="alert" v-if="successMessage !== null">
+                    {{ successMessage }}
+                </div>
+
                 <div class="card card-default">
                     <div class="card-header">Register</div>
                     <div class="card-body">
@@ -14,8 +18,8 @@
                             <div class="form-group row">
                                 <label for="name" class="col-sm-4 col-form-label text-md-right">Name</label>
                                 <div class="col-md-6">
-                                    <input id="name" type="email" class="form-control" v-model="name" required
-                                           autofocus autocomplete="off">
+                                    <input id="name" type="email" class="form-control" v-model="name" required autofocus
+                                        autocomplete="off">
                                 </div>
                             </div>
 
@@ -23,7 +27,7 @@
                                 <label for="email" class="col-sm-4 col-form-label text-md-right">E-Mail Address</label>
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control" v-model="email" required
-                                           autofocus autocomplete="off">
+                                        autofocus autocomplete="off">
                                 </div>
                             </div>
 
@@ -31,7 +35,7 @@
                                 <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
                                 <div class="col-md-6">
                                     <input id="password" type="password" class="form-control" v-model="password"
-                                           required autocomplete="off">
+                                        required autocomplete="off">
                                 </div>
                             </div>
 
@@ -51,14 +55,16 @@
 </template>
 
 <script>
-import axios from 'axios'; 
+import axios from 'axios';
 export default {
     data() {
         return {
             name: "",
             email: "",
             password: "",
-            error: null
+            error: null,
+            successMessage: null
+
         }
     },
     methods: {
@@ -73,9 +79,15 @@ export default {
                     })
                         .then(response => {
                             if (response.data.success) {
-                                window.location.href = "/login"
+
+                                this.successMessage = "Successfully registered!";
+
+                                setTimeout(() => {
+                                    window.location.href = "/login";
+                                }, 3000);
                             } else {
-                                this.error = response.data.message
+
+                                this.error = response.data.message;
                             }
                         })
                         .catch(function (error) {

@@ -4,30 +4,42 @@
         <div class="row">
             <div class="col-md-6">
                 <form @submit.prevent="addItem">
-                    <div class="form-group">
+                    <div class="form-group m-2">
                         <label>Inventory</label>
                         <select class="form-control" v-model="item.inventory_id">
-                            <option v-for="inventory in inventories" :key="inventory.id" :value="inventory.id">{{ inventory.name }}</option>
+                            <option v-for="inventory in inventories" :key="inventory.id" :value="inventory.id">{{
+                    inventory.name }}</option>
                         </select>
+
+                        <div class="invalid-feedback" v-if="errors.inventory_id">{{ errors.inventory_id[0] }}</div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group m-2">
                         <label>Name</label>
                         <input type="text" class="form-control" v-model="item.name">
+                        <div class="invalid-feedback" v-if="errors.name">{{ errors.name[0] }}</div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group m-2">
                         <label>Description</label>
                         <input type="text" class="form-control" v-model="item.description">
+                        <span class="text-danger" v-if="errors.description">{{ errors.description[0] }}</span>
+
                     </div>
-                    <div class="form-group">
+                    <div class="form-group m-2">
                         <label>Image</label>
                         <input type="file" class="form-control-file" @change="onFileChange">
                         <img v-if="imagePreview" :src="imagePreview" alt="Image Preview" style="max-width: 200px;">
+
+                        <span class="text-danger" v-if="errors.image">{{ errors.image[0] }}</span>
+
                     </div>
-                    <div class="form-group">
+                    <div class="form-group m-2">
                         <label>Quantity</label>
                         <input type="number" class="form-control" v-model="item.quantity">
+                        <span class="text-danger" v-if="errors.quantity">{{ errors.quantity[0] }}</span>
+
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Item</button>
+                    <button type="submit" class="btn btn-primary mt-3">Add Item</button>
+                    <div class="alert alert-success mt-3" v-if="successMessage">{{ successMessage }}</div>
                 </form>
             </div>
         </div>
@@ -46,7 +58,10 @@ export default {
                 quantity: 0
             },
             inventories: [],
-            imagePreview: null
+            imagePreview: null,
+            errors: {},
+            successMessage: ''
+
         }
     },
     created() {
@@ -89,12 +104,20 @@ export default {
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            .then(response => {
-                this.$router.push({name: 'items'});
-            })
-            .catch(error => {
-                console.error(error);
-            });
+                .then(response => {
+                    this.successMessage = 'Inventory added successfully.';
+                    setTimeout(() => {
+                        this.$router.push({ name: 'items' });
+                    }, 1500);
+                })
+                .catch(error => {
+                    if (error.response && error.response.status === 422) {
+                        // Handle validation errors
+                        this.errors = error.response.data.errors;
+                    } else {
+                        console.error(error);
+                    }
+                });
         }
     },
     beforeRouteEnter(to, from, next) {
