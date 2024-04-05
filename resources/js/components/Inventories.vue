@@ -7,6 +7,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Description</th>
+                <th>User Name</th>
                 <th>Created At</th>
                 <th>Updated At</th>
                 <th>Actions</th>
@@ -17,6 +18,7 @@
                 <td>{{ inventory.id }}</td>
                 <td>{{ inventory.name }}</td>
                 <td>{{ inventory.description }}</td>
+                <td>{{ inventory.user_name }}</td>
                 <td>{{ inventory.created_at }}</td>
                 <td>{{ inventory.updated_at }}</td>
                 <td>
